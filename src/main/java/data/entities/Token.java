@@ -26,7 +26,7 @@ public class Token {
 
     private Calendar expirationDate;
     
-    private static final long TOKEN_LIFETIME = 3600000;
+    public static final long TOKEN_LIFETIME = 3600000;
     
     public Token() {
     }
@@ -37,6 +37,7 @@ public class Token {
         this.value = new Encrypt().encryptInBase64UrlSafe("" + user.getId() + user.getUsername() + Long.toString(new Date().getTime())
                 + user.getPassword());
         this.expirationDate = Calendar.getInstance();
+        this.expirationDate.add(Calendar.HOUR_OF_DAY, 1);
     }
 
     public int getId() {
