@@ -1,9 +1,12 @@
 package data.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -11,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+@Entity
 public class Training {
 	
 	@Id
@@ -69,6 +73,10 @@ public class Training {
 	public void setEndDate(Calendar endDate) {
 		this.endDate = endDate;
 	}
+	
+	public Date getLessonTime(){
+		return this.beginDate.getTime();
+	}
 
 	public User getTrainer() {
 		return trainer;
@@ -106,8 +114,10 @@ public class Training {
 
 	@Override
 	public String toString() {
-		return "Training [id=" + id + ", beginDate=" + beginDate + ", endDate=" + endDate + ", trainer=" + trainer
-				+ ", students=" + students + ", court=" + court + "]";
+		String beDate = new SimpleDateFormat("HH:00 dd-MMM-yyyy ").format(beginDate.getTime());
+		String enDate = new SimpleDateFormat("HH:00 dd-MMM-yyyy ").format(endDate.getTime());
+		return "Training [id=" + id + ", beginDate=" + beDate + ", endDate=" + enDate + ", trainer=" + trainer.getUsername()
+				+ ", students=" + students.toString() + ", court=" + court.getId() + "]";
 	}
 	
 	
