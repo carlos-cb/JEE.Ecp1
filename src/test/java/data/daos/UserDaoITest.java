@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Calendar;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class UserDaoITest {
 
     @Autowired
     private DaosService daosService;
+    
+    @Autowired
+    private TokenDao tokenDao;
 
     @Test
     public void testCreate() {
@@ -44,5 +49,20 @@ public class UserDaoITest {
         Token t1 = (Token) daosService.getMap().get("tu1");
         assertEquals(u1, userDao.findByTokenValue(t1.getValue()));
         assertNull(userDao.findByTokenValue("kk"));
+    }
+    
+    @Test
+    public void testFindByTokenNotExpired(){
+    	assertEquals(4, tokenDao.count());
+    	Token token = new Token((User) daosService.getMap().get("u3"));
+    	Calendar date = Calendar.getInstance();
+    	date.add(Calendar.HOUR_OF_DAY, -1);
+    	token.setExpirationDate(date);
+    	tokenDao.save(token);
+    	assertEquals(5, tokenDao.count());
+    	assertNull(userDao.findByTokenNotExpired(token.getValue(), Calendar.getInstance()));
+    	User u1 = (User) daosService.getMap().get("u1");
+    	Token t1 = (Token) daosService.getMap().get("tu1");
+    	assertEquals(u1, userDao.findByTokenNotExpired(t1.getValue(), Calendar.getInstance()));
     }
 }
