@@ -104,6 +104,15 @@ public class Training {
 		return this.students.remove(user);
 	}
 
+	public boolean existStudent(int userId){
+		for(User student : this.students){
+			if(student.getId() == userId){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public Court getCourt() {
 		return court;
 	}
