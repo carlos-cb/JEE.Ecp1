@@ -39,6 +39,35 @@ public class TrainingResourceFunctionalTesting {
 		assertEquals(1, trainingDao.count());
 	}
 	
+	@Test
+	public void testDeleteTraining(){
+		assertEquals(0, trainingDao.count());
+		User user = userDao.findByUsernameOrEmail("trainer");
+		restService.createCourt("8");
+		TrainingWrapper trainingWrapper2 = restService.createTrainingWrapper(user.getId(), 8);
+		restService.createTraining(trainingWrapper2);
+		assertEquals(1, trainingDao.count());
+		restService.deleteTraining(trainingDao.findByCourtId(8).getId());
+		assertEquals(0, trainingDao.count());
+		//assertEquals(1, trainingDao.findByCourtId(8).getId());
+	}
+	
+	@Test
+	public void testAddTrainingStudent(){
+		User user = userDao.findByUsernameOrEmail("trainer");
+		User player = new User("bei", "bei@gmail.com", "1", null);
+		userDao.save(player);
+		restService.createCourt("9");
+		TrainingWrapper trainingWrapper3 = restService.createTrainingWrapper(user.getId(), 9);
+		restService.createTraining(trainingWrapper3);
+		assertEquals(1, trainingDao.count());
+		assertEquals(2, trainingDao.findByCourtId(9).getId());
+		restService.addStudent(trainingDao.findByCourtId(9).getId(), player.getId());
+		assertTrue(trainingDao.findByCourtId(9).existStudent(player.getId()));
+	}
+	
+	
+	
 	@After
 	public void deleteAll() {
 		new RestService().deleteAll();

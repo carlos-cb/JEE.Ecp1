@@ -18,6 +18,9 @@ public interface TrainingDao extends JpaRepository<Training, Integer>{
 	
 	@Query(value="select * from Training training where training.beginDate = ?1", nativeQuery = true)
 	List <Training> findByDate(Calendar beginDate);
+	
+	@Query(value = "select * from Training training where court_id = ?1", nativeQuery = true)
+	Training findByCourtId(int id);
 
 	
 	

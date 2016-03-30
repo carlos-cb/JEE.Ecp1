@@ -63,7 +63,7 @@ public class TrainingController {
 		}
 	}
 	
-	public boolean addTrainingStudent(int userId, int trainingId){
+	public boolean addTrainingStudent(int trainingId, int userId){
 		User student = userDao.findOne(userId);
 		Training training = trainingDao.findOne(trainingId);
 		if(training != null && student != null){
@@ -77,7 +77,7 @@ public class TrainingController {
 		return false;
 	}
 	
-	public boolean deleteTrainingStudent(int userId, int trainingId){
+	public boolean deleteTrainingStudent(int trainingId, int userId){
 		User student = userDao.findOne(userId);
 		Training training = trainingDao.findOne(trainingId);
 		if(training.existStudent(userId)){

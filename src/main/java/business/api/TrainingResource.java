@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import business.api.exceptions.AlreadyExistTrainingIdException;
@@ -39,20 +38,20 @@ public class TrainingResource {
 		return trainingController.showTrainings();
 	}
 	
-	@RequestMapping(method = RequestMethod.DELETE)
-	public void deleteTraining(@RequestParam(required = true) int id) throws NotFoundTrainingIdException{
+	@RequestMapping(value = Uris.ID, method = RequestMethod.DELETE)
+	public void deleteTraining(@PathVariable int id) throws NotFoundTrainingIdException{
 		if(!trainingController.deleteTraining(id))
 			throw new NotFoundTrainingIdException();
 	}
 	
-	@RequestMapping(value = Uris.TRAINING_ID + Uris.USER_ID, method = RequestMethod.POST)
+	@RequestMapping(value = Uris.TRAINING_ID + Uris.USERS + Uris.USER_ID, method = RequestMethod.POST)
 	public void addTrainingStudent(@PathVariable int trainingId, @PathVariable int userId)throws NotFoundTrainingIdException{
-		if(!trainingController.addTrainingStudent(userId, trainingId)){
+		if(!trainingController.addTrainingStudent(trainingId, userId)){
 			throw new NotFoundTrainingIdException();
 		}
 	}
 			
-	@RequestMapping(value = Uris.TRAINING_ID + Uris.USER_ID, method = RequestMethod.DELETE)
+	@RequestMapping(value = Uris.TRAINING_ID + Uris.USERS + Uris.USER_ID, method = RequestMethod.DELETE)
 	public void deleteTrainingStudent(@PathVariable int trainingId, @PathVariable int userId)throws NotFoundTrainingIdException{
 		if(!trainingController.deleteTrainingStudent(userId, trainingId)){
 			throw new NotFoundTrainingIdException();

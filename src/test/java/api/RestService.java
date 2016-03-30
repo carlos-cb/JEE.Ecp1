@@ -50,7 +50,22 @@ public class RestService {
     }
 
     public void createTraining(TrainingWrapper trainingWrapper){
-    	new RestBuilder<Object>(RestService.URL).path(Uris.TRAININGS).basicAuth(this.loginTrainer(), "").body(trainingWrapper).post().build();
+    	new RestBuilder<Object>(URL).path(Uris.TRAININGS).basicAuth(this.loginTrainer(), "").body(trainingWrapper)
+    	.post().build();
     }
     
+    public void deleteTraining(int id){
+    	new RestBuilder<Object>(URL).path(Uris.TRAININGS).pathId(id).basicAuth(this.loginTrainer(), "")
+    	.delete().build();
+    }
+    
+    public void addStudent(int trainingId, int userId){
+    	new RestBuilder<Object>(URL).path(Uris.TRAININGS).pathId(trainingId).path(Uris.USERS).pathId(userId)
+    	.basicAuth(this.loginTrainer(), "").post().build();
+    }
+    
+    public void deleteStudent(int trainingId, int userId){
+	    new RestBuilder<Object>(URL).path(Uris.TRAININGS).pathId(trainingId).path(Uris.USERS).pathId(userId)
+		.basicAuth(this.loginTrainer(), "").delete().build();
+    }
 }
