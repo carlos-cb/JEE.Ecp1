@@ -66,6 +66,20 @@ public class TrainingResourceFunctionalTesting {
 		assertTrue(trainingDao.findByCourtId(9).existStudent(player.getId()));
 	}
 	
+	@Test
+	public void testDeleteTrainingStudent(){
+		User user = userDao.findByUsernameOrEmail("trainer");
+		User player = new User("bei", "bei@gmail.com", "1", null);
+		userDao.save(player);
+		restService.createCourt("10");
+		TrainingWrapper trainingWrapper4 = restService.createTrainingWrapper(user.getId(), 10);
+		restService.createTraining(trainingWrapper4);
+		assertEquals(1, trainingDao.count());
+		restService.addStudent(trainingDao.findByCourtId(10).getId(), player.getId());
+		assertTrue(trainingDao.findByCourtId(10).existStudent(player.getId()));
+		restService.deleteStudent(trainingDao.findByCourtId(10).getId(), player.getId());
+		assertFalse(trainingDao.findByCourtId(10).existStudent(player.getId()));
+	}
 	
 	
 	@After

@@ -53,7 +53,7 @@ public class TrainingResource {
 			
 	@RequestMapping(value = Uris.TRAINING_ID + Uris.USERS + Uris.USER_ID, method = RequestMethod.DELETE)
 	public void deleteTrainingStudent(@PathVariable int trainingId, @PathVariable int userId)throws NotFoundTrainingIdException{
-		if(!trainingController.deleteTrainingStudent(userId, trainingId)){
+		if(!trainingController.deleteTrainingStudent(trainingId, userId)){
 			throw new NotFoundTrainingIdException();
 		}
 	}
