@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,11 +53,16 @@ public class Presenter {
 	}
 	
 	@RequestMapping(value = "/create-court", method = RequestMethod.POST)
-	public String createCourtSubmit(@ModelAttribute(value="court") CourtState court, Model model){
-		courtController.createCourt(court.getCourtId());
-		this.createCourt(model);
-		return "/createSuccess";
-
+	public String createCourtSubmit(@ModelAttribute("court") CourtState court, BindingResult bindingResult, Model model){
+		if (!bindingResult.hasErrors()) {
+			if (courtController.createCourt(court.getCourtId())) {
+				model.addAttribute("court", court);
+				return "/createSuccess";
+			}else {
+				 bindingResult.rejectValue("courtId", "error.court", "Pista ya existente");
+			}
+		}
+		return "/createCourt";
 	}
 	
 	@RequestMapping(value = { "/delete-court/{id}" })
