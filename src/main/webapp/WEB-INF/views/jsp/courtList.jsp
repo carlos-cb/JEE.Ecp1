@@ -12,7 +12,7 @@
 	<table border="1">
 		<thead>
 			<tr>
-				<th>Id</th>
+				<th>CourtId</th>
 				<th>Active</th>
 				<th>Actions</th>
 			</tr>
@@ -20,14 +20,13 @@
 		<tbody>
 			<c:forEach items="${courtList}" var="court">
 				<tr>
-					<td>${court.id}</td>
+					<td>${court.courtId}</td>
 					<td>${court.active}</td>
-					<td><a href="<c:url value='/delete-court/${court.id}' />">Delete</a>
+					<td><a href="<c:url value='/delete-court/${court.courtId}' />">Delete</a>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	</div>
 	<p><a href="<c:url value='/create-court'/>">Create court</a></p>
 	<p><a href="<c:url value='/home'/>">Home</a></p>
 
